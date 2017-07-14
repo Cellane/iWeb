@@ -1,0 +1,27 @@
+#extend("base")
+
+#export("title") { #(post.title) }
+
+#export("breadcrumb") {
+	<li><a href="/">Home</a></li>
+	<li><a href="/blog">Blog</a></li>
+	<li class="active">#(post.title)</li>
+}
+
+#export("content") {
+	<div class="page-header">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1>#(post.title)</h1>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12">
+			#markdown(post.perex)
+			#markdown(post.body)
+			<p>by <a href="/user/#(post.author.id)">#(post.author.username)</a> at #date(post.createdAt, "2", "en_US")</p>
+		</div>
+	</div>
+}

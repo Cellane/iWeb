@@ -1,0 +1,15 @@
+#extend("base")
+
+#export("title") { Homepage }
+
+#export("breadcrumb") {
+	<li class="active">Home</li>
+}
+
+#export("content") {
+	<div class="jumbotron">
+		<h1>iWeb</h1>
+		<p>Because fantasy is not my strong point.</p>
+		<p><a href="/blog" class="btn btn-primary btn-lg">Blog that fetches entries from MongoDB</a></p>
+	</div>
+}

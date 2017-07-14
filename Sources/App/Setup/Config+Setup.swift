@@ -1,6 +1,9 @@
 import AuthProvider
 import FluentProvider
+import LeafProvider
+import MarkdownProvider
 import MongoProvider
+import Paginator
 
 extension Config {
 	public func setup() throws {
@@ -16,7 +19,10 @@ extension Config {
 	private func setupProviders() throws {
 		try addProvider(AuthProvider.Provider.self)
 		try addProvider(FluentProvider.Provider.self)
+		try addProvider(LeafProvider.Provider.self)
+		try addProvider(MarkdownProvider.Provider.self)
 		try addProvider(MongoProvider.Provider.self)
+		try addProvider(PaginatorProvider.self)
 	}
 
 	/// Add all models that should have their
@@ -24,5 +30,6 @@ extension Config {
 	private func setupPreparations() throws {
 		preparations.append(User.self)
 		preparations.append(Token.self)
+		preparations.append(Post.self)
 	}
 }

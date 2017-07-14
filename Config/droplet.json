@@ -19,11 +19,14 @@
 	"//": "The type of hasher to use for hashing messages.",
 	"//": "crypto: Vapor's default hasher powered by OpenSSL (configure in crypto.json)",
 	"//": "bcrypt: Performant BCrypt hashing implementation (configure in bcrypt.json)",
-	"hash": "crypto",
+	"hash": "bcrypt",
 
 	"//": "The type of cipher to use for encrypting and decrypting messages.",
 	"//": "crypto: Vapor's default cipher powered by OpenSSL (configure in crypto.json)",
 	"cipher": "crypto",
+
+	"view": "leaf",
+	"sessions": "memory",
 
 	"//": "Choose which middleware are enabled (and in which order).",
 	"//": "error: Catches errors thrown in your application and returns a nice response.",
@@ -32,7 +35,8 @@
 	"middleware": [
 		"error",
 		"date",
-		"file"
+		"file",
+		"sessions"
 	],
 
 	"//": "Choose which commands this application can run",

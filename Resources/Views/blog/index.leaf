@@ -1,0 +1,33 @@
+#extend("base")
+
+#export("title") { Posts }
+
+#export("breadcrumb") {
+	<li><a href="/">Home</a></li>
+	<li class="active">Blog</li>
+}
+
+#export("content") {
+	<div class="page-header">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1>Blog</h1>
+			</div>
+		</div>
+	</div>
+
+	#loop(posts.data, "post") {
+		<div class="row">
+			<div class="col-lg-12">
+				<h2><a href="/blog/#(post.id)">#(post.title)</a></h2>
+				#markdown(post.perex)
+				#if(post.body) {
+					<p><a href="/blog/#(post.id)">Keep reading »</a></p>
+				}
+				<p>by <a href="/user/#(post.author.id)">#(post.author.username)</a> at #date(post.createdAt, "2", "en_US")</p>
+			</div>
+		</div>
+	}
+
+	#paginator(posts)
+}

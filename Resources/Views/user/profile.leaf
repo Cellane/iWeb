@@ -1,0 +1,57 @@
+#extend("base")
+
+#export("title") { #(user.username) }
+
+#export("breadcrumb") {
+	<li><a href="/">Home</a></li>
+	<li>User</li>
+	<li class="active">#(user.username)</li>
+}
+
+#export("content") {
+	<div class="page-header">
+		<div class="row">
+			<div class="col-lg-12">
+				<h1>#(user.username)</h1>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#()blog-posts" data-toggle="tab">Recent blog posts</a></li>
+				<li class=""><a href="#()swag" data-toggle="tab">Recently acquired swag</a></li>
+			</ul>
+
+			<div class="tab-content">
+				<div class="tab-pane fade active in" id="blog-posts">
+					#if(user.posts) {
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Title</th>
+									<th>Published at</th>
+								</tr>
+							</thead>
+							<tbody>
+								#loop(user.posts, "post") {
+									<tr>
+										<td><a href="/blog/#(post.id)">#(post.title)</a></td>
+										<td>#date(post.createdAt)</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					} ##else() {
+						<p>This user hasn't created any blog posts yet.</p>
+					}
+				</div>
+
+				<div class="tab-pane fade" id="swag">
+					This user doesn't have any swag.
+				</div>
+			</div>
+		</div>
+	</div>
+}
