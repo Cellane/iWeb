@@ -30,7 +30,7 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="javascript:alert('Not yet, you faggot!')">Login</a></li>
+					<li><a href="/user/login">Login</a></li>
 				</ul>
 			</div>
 		</div>

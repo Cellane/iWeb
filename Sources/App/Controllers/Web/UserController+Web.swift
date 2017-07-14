@@ -12,7 +12,12 @@ extension Controllers.Web {
 		func addRoutes() {
 			let user = droplet.grouped("user")
 
+			user.get("login", handler: showLogin)
 			user.get("", User.parameter, handler: showProfile)
+		}
+
+		func showLogin(req: Request) throws -> ResponseRepresentable {
+			return try droplet.view.make("user/login")
 		}
 
 		func showProfile(req: Request) throws -> ResponseRepresentable {

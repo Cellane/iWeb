@@ -15,6 +15,7 @@ extension Controllers.Web {
 
 			blog.get("", handler: showBlog)
 			blog.get("", Post.parameter, handler: showBlogPost)
+			blog.post("", Post.parameter, "comment", handler: submitComment)
 		}
 
 		func showBlog(req: Request) throws -> ResponseRepresentable {
@@ -34,6 +35,18 @@ extension Controllers.Web {
 			return try droplet.view.make("blog/post", [
 				"post": post.makeNode(in: context)
 			])
+		}
+
+		func submitComment(req: Request) throws -> ResponseRepresentable {
+			let comment = try req.comment()
+
+			try comment.save()
+
+			guard let postId = comment.postId?.string else {
+				return Response(redirect: "/blog")
+			}
+
+			return Response(redirect: "/blog/\(postId)")
 		}
 	}
 }

@@ -21,6 +21,7 @@
 			<div class="col-lg-12">
 				<h2><a href="/blog/#(post.id)">#(post.title)</a></h2>
 				#markdown(post.perex)
+
 				#if(post.body) {
 					<p><a href="/blog/#(post.id)">Keep reading »</a></p>
 				}

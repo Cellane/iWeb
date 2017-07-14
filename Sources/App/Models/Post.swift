@@ -40,6 +40,10 @@ extension Post {
 	var author: Parent<Post, User> {
 		return parent(id: authorId)
 	}
+
+	var comments: Children<Post, Comment> {
+		return children()
+	}
 }
 
 // MARK: - Preparation
@@ -50,6 +54,7 @@ extension Post: Preparation {
 		static let perex = "perex"
 		static let body = "body"
 		static let author = "author"
+		static let comments = "comments"
 		static let createdAt = "createdAt"
 	}
 
@@ -87,6 +92,7 @@ extension Post: JSONConvertible {
 		try json.set(Properties.perex, perex)
 		try json.set(Properties.body, body)
 		try json.set(User.foreignIdKey, authorId)
+		try json.set(Properties.createdAt, createdAt)
 
 		return json
 	}
@@ -95,16 +101,11 @@ extension Post: JSONConvertible {
 // MARK: - NodeConvertible
 extension Post: NodeConvertible {
 	func makeNode(in context: Context?) throws -> Node {
-		var node = Node(context)
-
-		try node.set(Properties.id, id)
-		try node.set(Properties.title, title)
-		try node.set(Properties.perex, perex)
-		try node.set(Properties.body, body ?? String())
-		try node.set(Properties.createdAt, createdAt)
+		var node = try Node(makeJSON())
 
 		if context?.isBlogContext ?? false {
 			try node.set(Properties.author, author.get().makeNode(in: context))
+			try node.set(Properties.comments, comments.all().makeNode(in: context))
 		}
 
 		return node

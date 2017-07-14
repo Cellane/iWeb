@@ -31,5 +31,6 @@ extension Config {
 		preparations.append(User.self)
 		preparations.append(Token.self)
 		preparations.append(Post.self)
+		preparations.append(Comment.self)
 	}
 }

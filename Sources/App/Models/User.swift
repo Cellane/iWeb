@@ -94,11 +94,7 @@ extension User: JSONConvertible {
 // MARK: - NodeRepresentable
 extension User: NodeRepresentable {
 	func makeNode(in context: Context?) throws -> Node {
-		var node = Node(context)
-
-		try node.set(Properties.id, id)
-		try node.set(Properties.username, username)
-		try node.set(Properties.email, email)
+		var node = try Node(makeJSON())
 
 		if context?.isUserContext ?? false {
 			try node.set(Properties.posts, posts

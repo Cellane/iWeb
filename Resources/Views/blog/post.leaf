@@ -20,8 +20,46 @@
 	<div class="row">
 		<div class="col-lg-12">
 			#markdown(post.perex)
-			#markdown(post.body)
+
+			#if(post.body) {
+				#markdown(post.body)
+			}
 			<p>by <a href="/user/#(post.author.id)">#(post.author.username)</a> at #date(post.createdAt, "2", "en_US")</p>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12">
+			<h2>Comments</h2>
+
+			#loop(post.comments, "comment") {
+				<div class="well">
+					<div class="row">
+						<div class="col-lg-10">#(comment.text)</div>
+						<div class="col-lg-2">by #(comment.nickname) at #date(comment.createdAt, "1", "en_US")</div>
+					</div>
+				</div>
+			}
+
+			<h3>Add comment</h3>
+
+			<div class="well bs-component">
+				<form action="/blog/#(post.id)/comment" method="post">
+					<fieldset>
+						<div class="form-group">
+							<label for="nickname">Nickname</label>
+							<input type="text" class="form-control" id="nickname" name="nickname" placeholder="Nickname">
+						</div>
+
+						<div class="form-group">
+							<label for="comment">Comment</label>
+							<textarea class="form-control" rows="5" id="text" name="text" placeholder="Comment"></textarea>
+						</div>
+
+						<button type="submit" class="btn btn-primary">Add your voice</button>
+					</fieldset>
+				</form>
+			</div>
 		</div>
 	</div>
 }
