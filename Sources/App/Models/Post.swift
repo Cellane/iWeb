@@ -55,6 +55,7 @@ extension Post: Preparation {
 		static let body = "body"
 		static let author = "author"
 		static let comments = "comments"
+		static let commentCount = "commentCount"
 		static let createdAt = "createdAt"
 	}
 
@@ -106,6 +107,7 @@ extension Post: NodeConvertible {
 		if context?.isBlogContext ?? false {
 			try node.set(Properties.author, author.get().makeNode(in: context))
 			try node.set(Properties.comments, comments.all().makeNode(in: context))
+			try node.set(Properties.commentCount, comments.count())
 		}
 
 		return node

@@ -25,7 +25,15 @@
 				#if(post.body) {
 					<p><a href="/blog/#(post.id)">Keep reading »</a></p>
 				}
-				<p>by <a href="/user/#(post.author.id)">#(post.author.username)</a> at #date(post.createdAt, "2", "en_US")</p>
+				<p>
+					by <a href="/user/#(post.author.id)">#(post.author.username)</a> at #date(post.createdAt, "2", "en_US") |
+
+					#equal(post.commentCount, "1") {
+						#(post.commentCount) comment
+					} ##else() {
+						#(post.commentCount) comments
+					}
+				</p>
 			</div>
 		</div>
 	}
