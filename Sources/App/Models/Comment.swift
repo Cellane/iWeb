@@ -86,6 +86,13 @@ extension Comment: JSONConvertible {
 
 // MARK: - NodeConvertible
 extension Comment: NodeConvertible {
+	convenience init(node: Node) throws {
+		try self.init(
+			nickname: try node.get(Properties.nickname),
+			text: try node.get(Properties.text)
+		)
+	}
+
 	func makeNode(in context: Context?) throws -> Node {
 		return try Node(makeJSON())
 	}
@@ -110,10 +117,8 @@ extension Request {
 
 		if let json = json {
 			comment = try Comment(json: json)
-		} else if let nickname = data[Comment.Properties.nickname]?.string,
-			let text = data[Comment.Properties.text]?.string {
-
-			comment = try Comment(nickname: nickname, text: text)
+		} else if let node = formURLEncoded {
+			comment = try Comment(node: node)
 		} else {
 			throw Abort(.badRequest)
 		}
