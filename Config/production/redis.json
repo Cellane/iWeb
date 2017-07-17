@@ -1,0 +1,5 @@
+{
+	"hostname": "$REDIS_HOSTNAME",
+	"port": "6379",
+	"database": "$REDIS_DATABASE"
+}

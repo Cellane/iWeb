@@ -10,6 +10,7 @@ let package = Package(
 		.Package(url: "https://github.com/vapor/vapor.git", majorVersion: 2),
 		.Package(url: "https://github.com/vapor/fluent-provider.git", majorVersion: 1),
 		.Package(url: "https://github.com/vapor/mongo-provider.git", majorVersion: 2),
+		.Package(url: "https://github.com/vapor/redis-provider.git", majorVersion: 2),
 		.Package(url: "https://github.com/vapor/auth-provider.git", majorVersion: 1),
 		.Package(url: "https://github.com/vapor/leaf-provider.git", majorVersion: 1),
 		.Package(url: "https://github.com/vapor-community/markdown-provider.git", majorVersion: 1),

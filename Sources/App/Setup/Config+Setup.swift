@@ -5,6 +5,7 @@ import LeafProvider
 import MarkdownProvider
 import MongoProvider
 import Paginator
+import RedisProvider
 
 extension Config {
 	public func setup() throws {
@@ -23,6 +24,8 @@ extension Config {
 		try addProvider(LeafProvider.Provider.self)
 		try addProvider(MarkdownProvider.Provider.self)
 		try addProvider(MongoProvider.Provider.self)
+		try addProvider(RedisProvider.Provider.self)
+
 		try addProvider(PaginatorProvider.self)
 
 		addConfigurable(middleware: FlashMiddleware(), name: "flash")

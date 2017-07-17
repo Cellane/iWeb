@@ -26,7 +26,8 @@
 	"cipher": "crypto",
 
 	"view": "leaf",
-	"sessions": "memory",
+	"cache": "redis",
+	"sessions": "cache",
 
 	"//": "Choose which middleware are enabled (and in which order).",
 	"//": "error: Catches errors thrown in your application and returns a nice response.",
