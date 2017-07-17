@@ -24,7 +24,7 @@ extension Controllers.Web {
 				.sort(Post.createdAtKey, .descending)
 				.paginator(5, request: req)
 
-			return try droplet.view.make("blog/index", [
+			return try droplet.view.makeDefault("blog/index", for: req, [
 				"posts": posts.makeNode(in: context)
 			])
 		}
@@ -32,7 +32,7 @@ extension Controllers.Web {
 		func showBlogPost(req: Request) throws -> ResponseRepresentable {
 			let post = try req.parameters.next(Post.self)
 
-			return try droplet.view.make("blog/post", [
+			return try droplet.view.makeDefault("blog/post", for: req, [
 				"post": post.makeNode(in: context)
 			])
 		}

@@ -20,7 +20,7 @@
 	<div class="row">
 		<div class="col-lg-6 col-lg-offset-3">
 			<div class="well bs-component">
-				<form class="form-horizontal">
+				<form class="form-horizontal" action="/user/login" method="post">
 					<fieldset>
 						<div class="form-group">
 							<label for="username" class="col-lg-3 control-label">Username</label>

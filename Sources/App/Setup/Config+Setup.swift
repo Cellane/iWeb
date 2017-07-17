@@ -1,4 +1,5 @@
 import AuthProvider
+import Flash
 import FluentProvider
 import LeafProvider
 import MarkdownProvider
@@ -23,6 +24,9 @@ extension Config {
 		try addProvider(MarkdownProvider.Provider.self)
 		try addProvider(MongoProvider.Provider.self)
 		try addProvider(PaginatorProvider.self)
+
+		addConfigurable(middleware: FlashMiddleware(), name: "flash")
+		addConfigurable(middleware: PersistMiddleware<User>(), name: "persist-user")
 	}
 
 	/// Add all models that should have their

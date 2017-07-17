@@ -80,6 +80,12 @@
       "version": "2.1.1"
     },
     {
+      "package": "Flash",
+      "reason": null,
+      "repositoryURL": "https://github.com/nodes-vapor/flash.git",
+      "version": "1.0.0"
+    },
+    {
       "package": "Fluent",
       "reason": null,
       "repositoryURL": "https://github.com/vapor/fluent.git",

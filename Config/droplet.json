@@ -36,7 +36,9 @@
 		"error",
 		"date",
 		"file",
-		"sessions"
+		"sessions",
+		"persist-user",
+		"flash"
 	],
 
 	"//": "Choose which commands this application can run",

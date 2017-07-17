@@ -13,7 +13,7 @@ extension Controllers.Web {
 		}
 
 		func showHomepage(req: Request) throws -> ResponseRepresentable {
-			return try droplet.view.make("home")
+			return try droplet.view.makeDefault("home", for: req)
 		}
 	}
 }
