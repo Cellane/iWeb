@@ -14,8 +14,8 @@ extension Controllers.Web {
 			let adminAuthorized = admin.grouped(SessionRolesMiddleware(User.self, roles: [Role.admin]))
 			let adminOrEditorAuthorized = admin.grouped(SessionRolesMiddleware(User.self, roles: [Role.admin, Role.editor]))
 
-			admin.get("users", handler: showUsers)
-			admin.post("users", User.parameter, "edit", handler: editUser)
+			adminAuthorized.get("users", handler: showUsers)
+			adminAuthorized.post("users", User.parameter, "edit", handler: editUser)
 			adminOrEditorAuthorized.get("posts", handler: showPosts)
 		}
 

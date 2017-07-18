@@ -13,9 +13,9 @@ extension Controllers.API {
 			let role = droplet.grouped(["api", "role"])
 			let adminAuthorized = role.grouped(TokenRolesMiddleware(User.self, roles: [Role.admin]))
 
-			role.get("", handler: index)
-			role.post("", handler: store)
-			role.delete(Role.parameter, handler: delete)
+			adminAuthorized.get("", handler: index)
+			adminAuthorized.post("", handler: store)
+			adminAuthorized.delete(Role.parameter, handler: delete)
 		}
 
 		func index(req: Request) throws -> ResponseRepresentable {
