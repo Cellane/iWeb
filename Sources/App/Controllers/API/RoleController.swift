@@ -15,6 +15,7 @@ extension Controllers.API {
 
 			role.get("", handler: index)
 			role.post("", handler: store)
+			role.delete(Role.parameter, handler: delete)
 		}
 
 		func index(req: Request) throws -> ResponseRepresentable {
@@ -27,6 +28,14 @@ extension Controllers.API {
 			try role.save()
 
 			return role
+		}
+
+		func delete(req: Request) throws -> ResponseRepresentable {
+			let role = try req.parameters.next(Role.self)
+
+			try role.delete()
+
+			return Response(status: .ok)
 		}
 	}
 }

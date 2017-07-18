@@ -38,7 +38,7 @@
 								<td>#(user.username)</td>
 								<td>#(user.email)</td>
 								<td>
-									<select class="form-control" name="roleId">
+									<select class="form-control input-sm" name="roleId">
 										<option value="" #equal(user.role, "null") { selected }>none</option>
 
 										#loop(roles, "role") {
@@ -47,7 +47,7 @@
 									</select>
 								</td>
 								<td>
-									<button type="submit" class="btn btn-default">Save</button>
+									<button type="submit" class="btn btn-default btn-sm">Save</button>
 								</td>
 							</tr>
 						</form>
