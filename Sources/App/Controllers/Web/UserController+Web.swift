@@ -31,9 +31,8 @@ extension Controllers.Web {
 					.flash(.error, "Don't think we'll get anywhere without username and password.")
 			}
 
-			let credentials = Password(username: username, password: password)
-
 			do {
+				let credentials = Password(username: username, password: password)
 				let user = try User.authenticate(credentials)
 
 				req.auth.authenticate(user)

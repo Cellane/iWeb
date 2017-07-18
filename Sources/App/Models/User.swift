@@ -3,17 +3,24 @@ import AuthProvider
 import BCrypt
 import FluentProvider
 
+protocol HasRole {
+	var roleId: Identifier? { get }
+	var role: Parent<User, Role> { get }
+}
+
 final class User: Model {
 	let storage = Storage()
 
 	var username: String
 	var email: String
 	var password: Bytes
+	var roleId: Identifier?
 
-	init(username: String, email: String, password: Bytes) {
+	init(username: String, email: String, password: Bytes, role: Role? = nil) throws {
 		self.username = username
 		self.email = email
 		self.password = password
+		roleId = try role?.assertExists()
 	}
 
 	// MARK: - Row
@@ -23,6 +30,7 @@ final class User: Model {
 
 		let passwordAsString: String = try row.get(Properties.password)
 		password = passwordAsString.makeBytes()
+		roleId = try row.get(Role.foreignIdKey)
 	}
 
 	func makeRow() throws -> Row {
@@ -31,6 +39,7 @@ final class User: Model {
 		try row.set(Properties.username, username)
 		try row.set(Properties.email, email)
 		try row.set(Properties.password, password.makeString())
+		try row.set(Role.foreignIdKey, roleId)
 
 		return row
 	}
@@ -40,15 +49,20 @@ extension User {
 	var posts: Children<User, Post> {
 		return children()
 	}
+
+	var role: Parent<User, Role> {
+		return parent(id: roleId)
+	}
 }
 
 // MARK: - Preparation
 extension User: Preparation {
 	struct Properties {
-		static let id = "id"
+		static let id = "id" // swiftlint:disable:this identifier_name
 		static let username = "username"
 		static let email = "email"
 		static let password = "password"
+		static let role = "role"
 		static let posts = "posts"
 	}
 
@@ -58,6 +72,7 @@ extension User: Preparation {
 			builder.string(Properties.username, unique: true)
 			builder.string(Properties.email)
 			builder.string(Properties.password)
+			builder.foreignKey(for: Role.self)
 		}
 	}
 
@@ -86,15 +101,18 @@ extension User: JSONConvertible {
 		try json.set(Properties.id, id)
 		try json.set(Properties.username, username)
 		try json.set(Properties.email, email)
+		try json.set(Role.foreignIdKey, roleId)
 
 		return json
 	}
 }
 
-// MARK: - NodeRepresentable
-extension User: NodeRepresentable {
+// MARK: - NodeConvertible
+extension User: NodeConvertible {
 	func makeNode(in context: Context?) throws -> Node {
 		var node = try Node(makeJSON())
+
+		try node.set(Properties.role, role.get().makeNode(in: context))
 
 		if context?.isUserContext ?? false {
 			try node.set(Properties.posts, posts
@@ -151,6 +169,10 @@ extension User: Timestampable {
 
 // MARK: - SoftDeletable
 extension User: SoftDeletable {
+}
+
+// MARK: - HasRole
+extension User: HasRole {
 }
 
 // MARK: - Request

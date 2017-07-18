@@ -49,7 +49,7 @@ extension Post {
 // MARK: - Preparation
 extension Post: Preparation {
 	struct Properties {
-		static let id = "id"
+		static let id = "id" // swiftlint:disable:this identifier_name
 		static let title = "title"
 		static let perex = "perex"
 		static let body = "body"

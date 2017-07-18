@@ -41,7 +41,7 @@ extension Comment {
 // MARK: - Preparation
 extension Comment: Preparation {
 	struct Properties {
-		static let id = "id"
+		static let id = "id" // swiftlint:disable:this identifier_name
 		static let nickname = "nickname"
 		static let text = "text"
 		static let post = "post"

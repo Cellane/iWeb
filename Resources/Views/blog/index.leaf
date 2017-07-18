@@ -25,6 +25,7 @@
 				#if(post.body) {
 					<p><a href="/blog/#(post.id)">Keep reading »</a></p>
 				}
+
 				<p>
 					by <a href="/user/#(post.author.id)">#(post.author.username)</a> at #date(post.createdAt, "2", "en_US") |
 
