@@ -32,7 +32,7 @@
 
 				<tbody>
 					#loop(users.data, "user") {
-						<form class="form-inline" action="/admin/users/edit" method="post">
+						<form class="form-inline" action="/admin/users/#(user.id)/edit" method="post">
 							<tr class="#equal(user.role.name, "admin") { inxfo }">
 								<td>#(offset)</td>
 								<td>#(user.username)</td>
@@ -47,13 +47,12 @@
 									</select>
 								</td>
 								<td>
-									<input type="hidden" name="userId" value="#(user.id)">
-									<button type="submit" name="submit" value="true" class="btn btn-default btn-sm">Save</button>
+									<button type="submit" name="submit" value="true" class="btn btn-default btn-sm" #if(user.deletedAt) { disabled }>Save</button>
 
 									#if(user.deletedAt) {
-										<button type="submit" name="delete" value="true" class="btn btn-info btn-sm">Restore</button>
+										<a href="/admin/users/#(user.id)/restore" class="btn btn-info btn-sm" role="button">Restore</a>
 									} ##else() {
-										<button type="submit" name="delete" value="true" class="btn btn-danger btn-sm">Delete</button>
+										<a href="/admin/users/#(user.id)/delete" class="btn btn-danger btn-sm" role="button">Delete</a>
 									}
 								</td>
 							</tr>

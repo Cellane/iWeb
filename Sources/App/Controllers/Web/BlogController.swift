@@ -13,9 +13,9 @@ extension Controllers.Web {
 		func addRoutes() {
 			let blog = droplet.grouped("blog")
 
-			blog.get("", handler: showBlog)
-			blog.get("", Post.parameter, handler: showBlogPost)
-			blog.post("", Post.parameter, "comment", handler: submitComment)
+			blog.get(handler: showBlog)
+			blog.get(Post.parameter, handler: showBlogPost)
+			blog.post(Post.parameter, "comment", handler: submitComment)
 		}
 
 		func showBlog(req: Request) throws -> ResponseRepresentable {

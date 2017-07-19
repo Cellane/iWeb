@@ -57,6 +57,7 @@ extension Post: Preparation {
 		static let comments = "comments"
 		static let commentCount = "commentCount"
 		static let createdAt = "createdAt"
+		static let deletedAt = "deletedAt"
 	}
 
 	static func prepare(_ database: Database) throws {
@@ -104,8 +105,12 @@ extension Post: NodeConvertible {
 	func makeNode(in context: Context?) throws -> Node {
 		var node = try Node(makeJSON())
 
-		if context?.isBlogContext ?? false {
+		if context?.isAdminContext ?? false || context?.isBlogContext ?? false {
 			try node.set(Properties.author, author.get().makeNode(in: context))
+			try node.set(Properties.deletedAt, deletedAt)
+		}
+
+		if context?.isBlogContext ?? false {
 			try node.set(Properties.comments, comments.all().makeNode(in: context))
 			try node.set(Properties.commentCount, comments.count())
 		}

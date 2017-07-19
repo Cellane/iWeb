@@ -17,7 +17,7 @@ extension Controllers.Web {
 			user.get("login", handler: showLogin)
 			user.post("login", handler: doLogin)
 			user.get("logout", handler: doLogout)
-			user.get("", User.parameter, handler: showProfile)
+			user.get(User.parameter, handler: showProfile)
 		}
 
 		func showLogin(req: Request) throws -> ResponseRepresentable {

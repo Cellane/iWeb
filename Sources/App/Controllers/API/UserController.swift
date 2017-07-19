@@ -13,8 +13,8 @@ extension Controllers.API {
 			let user = droplet.grouped(["api", "user"])
 			let authenticated = user.grouped(TokenAuthenticationMiddleware(User.self))
 
-			user.get("", handler: index)
-			user.post("", handler: store)
+			user.get(handler: index)
+			user.post(handler: store)
 			user.post("login", handler: login)
 			authenticated.get("me", handler: me)
 		}

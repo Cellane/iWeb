@@ -13,8 +13,8 @@ extension Controllers.API {
 			let role = droplet.grouped(["api", "role"])
 			let adminAuthorized = role.grouped(TokenRolesMiddleware(User.self, roles: [Role.admin]))
 
-			adminAuthorized.get("", handler: index)
-			adminAuthorized.post("", handler: store)
+			adminAuthorized.get(handler: index)
+			adminAuthorized.post(handler: store)
 			adminAuthorized.delete(Role.parameter, handler: delete)
 		}
 

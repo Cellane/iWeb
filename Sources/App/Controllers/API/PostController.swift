@@ -13,9 +13,9 @@ extension Controllers.API {
 			let post = droplet.grouped(["api", "post"])
 			let authenticated = post.grouped(TokenAuthenticationMiddleware(User.self))
 
-			post.get("", handler: index)
-			post.get("", Post.parameter, handler: show)
-			authenticated.post("", handler: store)
+			post.get(handler: index)
+			post.get(Post.parameter, handler: show)
+			authenticated.post(handler: store)
 		}
 
 		func index(req: Request) throws -> ResponseRepresentable {

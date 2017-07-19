@@ -62,9 +62,9 @@ extension User: Preparation {
 		static let username = "username"
 		static let email = "email"
 		static let password = "password"
-		static let deletedAt = "deletedAt"
 		static let role = "role"
 		static let posts = "posts"
+		static let deletedAt = "deletedAt"
 	}
 
 	static func prepare(_ database: Database) throws {
@@ -114,7 +114,6 @@ extension User: NodeConvertible {
 		var node = try Node(makeJSON())
 
 		try node.set(Properties.role, role.get().makeNode(in: context))
-		try node.set(Properties.deletedAt, deletedAt)
 
 		if context?.isUserContext ?? false {
 			try node.set(Properties.posts, posts
@@ -123,6 +122,10 @@ extension User: NodeConvertible {
 				.all()
 				.makeNode(in: context)
 			)
+		}
+
+		if context?.isAdminContext ?? false {
+			try node.set(Properties.deletedAt, deletedAt)
 		}
 
 		return node

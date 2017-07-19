@@ -9,7 +9,7 @@ extension Controllers.Web {
 		}
 
 		func addRoutes() {
-			droplet.get("", handler: showHomepage)
+			droplet.get(handler: showHomepage)
 		}
 
 		func showHomepage(req: Request) throws -> ResponseRepresentable {
