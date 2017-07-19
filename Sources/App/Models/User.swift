@@ -85,15 +85,13 @@ extension User: Preparation {
 // MARK: - JSONConvertible
 extension User: JSONConvertible {
 	convenience init(json: JSON) throws {
-		let passwordAsString: String = try json.get(Properties.password)
+		let passwordString: String = try json.get(Properties.password)
 
 		try self.init(
 			username: json.get(Properties.username),
 			email: json.get(Properties.email),
-			password: User.passwordHasher.make(passwordAsString)
+			password: User.passwordHasher.make(passwordString)
 		)
-
-		id = try json.get(Properties.id)
 	}
 
 	func makeJSON() throws -> JSON {
@@ -110,6 +108,16 @@ extension User: JSONConvertible {
 
 // MARK: - NodeConvertible
 extension User: NodeConvertible {
+	convenience init(node: Node) throws {
+		let passwordString: String = try node.get(Properties.password)
+
+		try self.init(
+			username: node.get(Properties.username),
+			email: node.get(Properties.email),
+			password: User.passwordHasher.make(passwordString)
+		)
+	}
+
 	func makeNode(in context: Context?) throws -> Node {
 		var node = try Node(makeJSON())
 

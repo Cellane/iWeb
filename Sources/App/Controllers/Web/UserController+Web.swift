@@ -15,8 +15,10 @@ extension Controllers.Web {
 			let user = droplet.grouped("user")
 
 			user.get("login", handler: showLogin)
-			user.post("login", handler: doLogin)
-			user.get("logout", handler: doLogout)
+			user.post("login", handler: logIn)
+			user.get("logout", handler: logOut)
+			user.get("register", handler: showRegister)
+			user.post("register", handler: register)
 			user.get(User.parameter, handler: showProfile)
 		}
 
@@ -24,7 +26,7 @@ extension Controllers.Web {
 			return try droplet.view.makeDefault("user/login", for: req)
 		}
 
-		func doLogin(req: Request) throws -> ResponseRepresentable {
+		func logIn(req: Request) throws -> ResponseRepresentable {
 			guard let username = req.data["username"]?.string,
 				let password = req.data["password"]?.string else {
 				return Response(redirect: "/user/login")
@@ -44,7 +46,7 @@ extension Controllers.Web {
 			}
 		}
 
-		func doLogout(req: Request) throws -> ResponseRepresentable {
+		func logOut(req: Request) throws -> ResponseRepresentable {
 			do {
 				try req.auth.unauthenticate()
 
@@ -53,6 +55,46 @@ extension Controllers.Web {
 			} catch {
 				return Response(redirect: "/")
 					.flash(.error, "Unable to log you out.")
+			}
+		}
+
+		func showRegister(req: Request) throws -> ResponseRepresentable {
+			return try droplet.view.makeDefault("user/register", for: req)
+		}
+
+		func register(req: Request) throws -> ResponseRepresentable {
+			do {
+				guard req.formURLEncoded?["password"]?.string == req.formURLEncoded?["confirmation"]?.string else {
+					return Response(redirect: "/user/register")
+						.flash(.error, "Password and password confirmation doesn't match.")
+				}
+
+				guard let node = req.formURLEncoded else {
+					throw Abort(.internalServerError)
+				}
+
+				let user = try User(node: node)
+
+				guard try User.makeQuery().filter(User.Properties.username, user.username).first() == nil else {
+					return Response(redirect: "/user/register")
+						.flash(.error, "An user with that username already exists.")
+				}
+
+				if try User.count() == 0 {
+					let adminRole = try Role.makeQuery().filter(Role.Properties.name, Role.admin).first()
+
+					user.roleId = try adminRole?.assertExists()
+
+					try? req.flash.add(.info, "As a first user of the system, you were promoted to the role of administrator.")
+				}
+
+				try user.save()
+
+				return Response(redirect: "/user/login")
+					.flash(.success, "Registration complete, you can log in.")
+			} catch {
+				return Response(redirect: "/user/register")
+					.flash(.error, "Unexpected error occurred.")
 			}
 		}
 
