@@ -15,13 +15,14 @@ extension Controllers.Web {
 			let adminOrEditorAuthorized = admin.grouped(SessionRolesMiddleware(User.self, roles: [Role.admin, Role.editor]))
 
 			adminAuthorized.get("users", handler: showUsers)
-			adminAuthorized.post("users", User.parameter, "edit", handler: editUser)
+			adminAuthorized.post("users", "edit", handler: editUser)
 			adminOrEditorAuthorized.get("posts", handler: showPosts)
 		}
 
 		func showUsers(req: Request) throws -> ResponseRepresentable {
 			let users = try User
 				.makeQuery()
+				.withSoftDeleted()
 				.sort(User.createdAtKey, .ascending)
 				.paginator(50, request: req)
 
@@ -32,8 +33,16 @@ extension Controllers.Web {
 		}
 
 		func editUser(req: Request) throws -> ResponseRepresentable {
+			guard let user = try User.withSoftDeleted().find(req.data["userId"]?.string) else {
+				return Response(redirect: "/admin/users")
+					.flash(.error, "Unexpected error occurred.")
+			}
+
+			if req.data["delete"]?.bool == true {
+				return try deleteUser(req: req, user: user)
+			}
+
 			do {
-				let user = try req.parameters.next(User.self)
 				let roleId = req.data["roleId"]?.string
 				let role = try Role.find(roleId)
 
@@ -46,6 +55,22 @@ extension Controllers.Web {
 			} catch {
 				return Response(redirect: "/admin/users")
 					.flash(.error, "Unexpected error occurred.")
+			}
+		}
+
+		func deleteUser(req: Request, user: User) throws -> ResponseRepresentable {
+			do {
+				if user.deletedAt == nil {
+					try user.delete()
+				} else {
+					try user.restore()
+				}
+
+				return Response(redirect: "/admin/users")
+					.flash(.success, "User successfully edited.")
+			} catch {
+				return Response(redirect: "/admin/users")
+					.flash(.error, "Couldn't modify user.")
 			}
 		}
 

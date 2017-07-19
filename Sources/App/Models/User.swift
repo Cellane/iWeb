@@ -62,6 +62,7 @@ extension User: Preparation {
 		static let username = "username"
 		static let email = "email"
 		static let password = "password"
+		static let deletedAt = "deletedAt"
 		static let role = "role"
 		static let posts = "posts"
 	}
@@ -113,6 +114,7 @@ extension User: NodeConvertible {
 		var node = try Node(makeJSON())
 
 		try node.set(Properties.role, role.get().makeNode(in: context))
+		try node.set(Properties.deletedAt, deletedAt)
 
 		if context?.isUserContext ?? false {
 			try node.set(Properties.posts, posts
