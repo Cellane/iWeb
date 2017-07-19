@@ -16,28 +16,36 @@
 		</div>
 	</div>
 
-	#loop(posts.data, "post") {
+	#equal(posts.meta.paginator.total, "0") {
 		<div class="row">
 			<div class="col-lg-12">
-				<h2><a href="/blog/#(post.id)">#(post.title)</a></h2>
-				#markdown(post.perex)
-
-				#if(post.body) {
-					<p><a href="/blog/#(post.id)">Keep reading »</a></p>
-				}
-
-				<p>
-					by <a href="/user/#(post.author.id)">#(post.author.username)</a> at #date(post.createdAt, "2", "en_US") |
-
-					#equal(post.commentCount, "1") {
-						#(post.commentCount) comment
-					} ##else() {
-						#(post.commentCount) comments
-					}
-				</p>
+				No posts to display.
 			</div>
 		</div>
-	}
+	} ##else() {
+		#loop(posts.data, "post") {
+			<div class="row">
+				<div class="col-lg-12">
+					<h2><a href="/blog/#(post.id)">#(post.title)</a></h2>
+					#markdown(post.perex)
 
-	#paginator(posts)
+					#if(post.body) {
+						<p><a href="/blog/#(post.id)">Keep reading »</a></p>
+					}
+
+					<p>
+						by <a href="/user/#(post.author.id)">#(post.author.username)</a> at #date(post.createdAt, "2", "en_US") |
+
+						#equal(post.commentCount, "1") {
+							#(post.commentCount) comment
+						} ##else() {
+							#(post.commentCount) comments
+						}
+					</p>
+				</div>
+			</div>
+		}
+
+		#paginator(posts)
+	}
 }

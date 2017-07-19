@@ -11,11 +11,11 @@ extension Controllers.API {
 
 		func addRoutes() {
 			let post = droplet.grouped(["api", "post"])
-			let authenticated = post.grouped(TokenAuthenticationMiddleware(User.self))
+			let adminOrEditorAuthenticated = post.grouped(TokenRolesMiddleware(User.self, roles: [Role.admin, Role.editor]))
 
 			post.get(handler: index)
 			post.get(Post.parameter, handler: show)
-			authenticated.post(handler: store)
+			adminOrEditorAuthenticated.post(handler: store)
 		}
 
 		func index(req: Request) throws -> ResponseRepresentable {

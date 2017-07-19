@@ -34,6 +34,12 @@ extension Controllers.API {
 				throw Abort(.badRequest, reason: "An user with that username already exists.")
 			}
 
+			if try User.count() == 0 {
+				let adminRole = try Role.makeQuery().filter(Role.Properties.name, Role.admin).first()
+
+				user.roleId = try adminRole?.assertExists()
+			}
+
 			try user.save()
 
 			return user
