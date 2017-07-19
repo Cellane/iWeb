@@ -11,10 +11,17 @@
 #export("content") {
 	<div class="page-header">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-10 col-md-10 col-sm-10">
 				<h1>Posts</h1>
 			</div>
+
+			<div class="col-lg-2 col-md-2 col-sm-2 text-right right-button">
+				<a href="/admin/posts/new" class="btn btn-primary">New post</a>
+			</div>
 		</div>
+	</div>
+
+	<div class="row">
 	</div>
 
 	<div class="row">
@@ -37,11 +44,11 @@
 							<td>#(post.author.username)</td>
 							<td>#date(post.createdAt, "1", "en_US")</td>
 							<td>
-								<a href="/admin/posts/#(post.id)/edit" class="btn btn-default btn-sm" role="button">Edit</a>
-
 								#if(post.deletedAt) {
+									<a href="#" class="btn btn-default btn-sm disabled" role="button">Edit</a>
 									<a href="/admin/posts/#(post.id)/restore" class="btn btn-info btn-sm" role="button">Restore</a>
 								} ##else() {
+									<a href="/admin/posts/#(post.id)/edit" class="btn btn-default btn-sm" role="button">Edit</a>
 									<a href="/admin/posts/#(post.id)/delete" class="btn btn-danger btn-sm" role="button">Delete</a>
 								}
 							</td>

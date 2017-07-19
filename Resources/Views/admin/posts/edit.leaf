@@ -1,0 +1,56 @@
+#extend("base")
+
+#export("title") { Posts }
+
+#export("breadcrumb") {
+	<li><a href="/">Home</a></li>
+	<li>Admin</li>
+	<li class="active">Posts</li>
+}
+
+#export("content") {
+	<div class="page-header">
+		<div class="row">
+			<div class="col-lg-12">
+				#if(post) {
+					<h1>#(post.title)</h1>
+				} ##else() {
+					<h1>New post</h1>
+				}
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12">
+			#if(post) {
+				<form action="/admin/posts/#(post.id)/edit" method="post">
+			} ##else() {
+				<form action="/admin/posts/new" method="post">
+			}
+
+			<div class="form-group">
+				<label for="title">Title</label>
+				<input type="text" class="form-control" name="title" placeholder="Title" value="#(post.title)">
+			</div>
+
+			<div class="form-group">
+				<label for="perex">Perex</label>
+				<textarea class="form-control" name="perex" rows="5" placeholder="Perex (Markdown supported)">#(post.perex)</textarea>
+			</div>
+
+			<div class="form-group">
+				<label for="body">Post body</label>
+				<textarea class="form-control" name="body" rows="10" placeholder="Post body (optional, Markdown supported)">#(post.body)</textarea>
+			</div>
+
+			<button type="submit" class="btn btn-primary">
+				#if(post) {
+					Edit
+				} ##else() {
+					Create
+				}
+			</button>
+		</div>
+	</div>
+}

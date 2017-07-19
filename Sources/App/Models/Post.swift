@@ -102,6 +102,15 @@ extension Post: JSONConvertible {
 
 // MARK: - NodeConvertible
 extension Post: NodeConvertible {
+	convenience init(node: Node) throws {
+		try self.init(
+			title: node.get(Properties.title),
+			perex: node.get(Properties.perex)
+		)
+
+		body = try node.get(Properties.body)
+	}
+
 	func makeNode(in context: Context?) throws -> Node {
 		var node = try Node(makeJSON())
 
@@ -123,6 +132,17 @@ extension Post: NodeConvertible {
 extension Post: ResponseRepresentable {
 }
 
+// MARK: - Updateable
+extension Post: Updateable {
+	public static var updateableKeys: [UpdateableKey<Post>] {
+		return [
+			UpdateableKey(Properties.title, String.self, { $0.title = $1 }),
+			UpdateableKey(Properties.perex, String.self, { $0.perex = $1 }),
+			UpdateableKey(Properties.body, String.self, { $0.body = $1 })
+		]
+	}
+}
+
 // MARK: - TimeStampable
 extension Post: Timestampable {
 }
@@ -134,11 +154,15 @@ extension Post: SoftDeletable {
 // MARK: - Request
 extension Request {
 	func post() throws -> Post {
-		guard let json = json else {
+		let post: Post
+
+		if let json = json {
+			post = try Post(json: json)
+		} else if let node = formURLEncoded {
+			post = try Post(node: node)
+		} else {
 			throw Abort(.badRequest)
 		}
-
-		let post = try Post(json: json)
 
 		post.authorId = try auth.assertAuthenticated(User.self).id
 
